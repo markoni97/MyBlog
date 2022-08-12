@@ -1,0 +1,20 @@
+@import "../../../styles/variables";
+
+.btn {
+  font-size: 2rem;
+  font-family: inherit;
+  background-color: $color-yellow;
+  border: none;
+  border-radius: .8rem;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+}
+
+.link {
+  display: inline-block;
+  font-size: 2rem;
+  background-color: $color-yellow;
+  border-radius: .8rem;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+}

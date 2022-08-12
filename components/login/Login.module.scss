@@ -1,0 +1,32 @@
+@import "../../styles/variables";
+
+.login {
+  background-color: $color-light-green;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  padding: 5rem;
+  border-radius: .8rem;
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: .5rem;
+    margin: .5rem 0;
+
+    &__label {
+      font-size: 1.8rem;
+      margin-bottom: .5rem;
+    }
+
+    &__input {
+      font-size: 1.8rem;
+      border: none;
+      padding: .5rem;
+      border-radius: .8rem;
+    }
+  }
+}

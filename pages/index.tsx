@@ -1,10 +1,12 @@
 import type { NextPage } from "next";
-import styles from "../styles/Home.module.scss";
+
+import classes from "../styles/pages/Home.module.scss";
 
 const Home: NextPage = () => {
   return (
-    <div className={styles.container}>
-      <h1>Hello Next</h1>
+    <div className={classes["home"]}>
+      <h1>Popular blog posts...</h1>
+      <h2>Hello</h2>
     </div>
   );
 };
