@@ -1,5 +1,7 @@
-import { FC, Fragment, ReactNode } from "react";
-import Navigation from "../nav/Navigation";
+import { Box, CssBaseline } from '@mui/material';
+import Head from 'next/head';
+import { FC, Fragment, ReactNode } from 'react';
+import Navigation from '../nav/Navigation';
 
 interface LayoutInterface {
   children: ReactNode;
@@ -8,8 +10,13 @@ interface LayoutInterface {
 const Layout: FC<LayoutInterface> = (props) => {
   return (
     <Fragment>
+      {/* <Head  <meta name="viewport" content="initial-scale=1, width=device-width" />
+/> */}
+      <CssBaseline />
       <Navigation />
-      <main className="mt-5 full-height">{props.children}</main>
+      <Box sx={{ height: '100%', paddingTop: '4rem' }} component="main">
+        {props.children}
+      </Box>
     </Fragment>
   );
 };
