@@ -1,36 +1,33 @@
-import { ChangeEvent, useState } from 'react';
-
-type inputChangeEvent = ChangeEvent<HTMLInputElement>
+import { ChangeEvent, useState, FocusEvent } from 'react';
 
 interface InputHook {
   enteredValue: String;
-  isTouched: Boolean;
-  hasError: Boolean;
-  inputHandler: (e: inputChangeEvent) => void;
-  touchHandler: (e: inputChangeEvent) => void;
+  hasError: boolean;
+  inputHandler: (e: ChangeEvent<HTMLInputElement>) => void;
+  inputBlurHandler: (e: FocusEvent<HTMLInputElement>) => void;
 }
 
 const useInput = (validate: (value: string) => boolean): InputHook => {
   const [enteredValue, setEnteredValue] = useState<string>('');
   const [isTouched, setIsTouched] = useState<boolean>(false);
 
-  const isValid = validate(enteredValue);
-  const hasError = !isValid && isTouched;
+  const isValid: boolean = validate(enteredValue);
+  const hasError: boolean = !isValid && isTouched;
 
-  const inputHandler = (e: inputChangeEvent): void => {
+  const inputHandler = (e: ChangeEvent<HTMLInputElement>): void => {
     setEnteredValue(e.target.value);
   };
 
-  const touchHandler = (e: inputChangeEvent) => {
-    console.log(e.target.value);
-    // setIsTouched(e.target.value);
+  const inputBlurHandler = (e: FocusEvent<HTMLInputElement>): void => {
+    setIsTouched(true);
   }
 
   return {
     enteredValue,
-    isTouched,
     hasError,
     inputHandler,
-    touchHandler
+    inputBlurHandler
   };
 };
+
+export default useInput;

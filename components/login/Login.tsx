@@ -1,34 +1,31 @@
-import { ChangeEvent, FC, FormEvent, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, MouseEventHandler, useState } from 'react';
 import { LoginInterface } from '../../types';
-import {
-  TextField,
-  Button,
-  FormControl
-} from '@mui/material';
+import { TextField, Button, FormControl } from '@mui/material';
+import useInput from '../../hook/use-input';
 
 const Login: FC = () => {
-  const [loginData, setLoginData] = useState<LoginInterface>({
-    email: '',
-    password: '',
-  });
 
-  const usernameInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setLoginData({
-      ...loginData,
-      email: e.target.value,
-    });
-  };
+  const {
+    enteredValue: emailValue,
+    hasError: emailHasError,
+    inputHandler: emailChangeHandler,
+    inputBlurHandler: emailBlurHandler,
+  } = useInput((value) => value.trim() !== '');
 
-  const passwordInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setLoginData({
-      ...loginData,
-      password: e.target.value,
-    });
-  };
+  const {
+    enteredValue: passwordlValue,
+    hasError: passwordHasError,
+    inputHandler: passwordChangeHandler,
+    inputBlurHandler: passwordBlurHandler,
+  } = useInput((value) => value.trim() !== '');
 
-  const loginHandler = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('Login clicked!');
+
+  const loginHandler = () => {
+    if(passwordHasError || emailHasError) {
+      console.log('Form is not valid!')
+      return;
+    }
+    console.log('Loging in..');
   };
 
   return (
@@ -39,25 +36,30 @@ const Login: FC = () => {
         justifyContent: 'center',
         alignItems: 'stretch',
         gap: '1rem',
-        padding: '1rem'
+        padding: '1rem',
       }}
     >
-      
       <TextField
         id="username"
         label="Username"
         required
         type="text"
-        onChange={usernameInputHandler}
+        onChange={emailChangeHandler}
+        onBlur={emailBlurHandler}
+        value={emailValue}
+        error={emailHasError}
       />
       <TextField
         id="pass"
         label="Password"
         required
         type="password"
-        onChange={passwordInputHandler}
+        onChange={passwordChangeHandler}
+        onBlur={passwordBlurHandler}
+        value={passwordlValue}
+        error={passwordHasError}
       />
-      <Button variant="contained" size="large">
+      <Button variant="contained" size="large" onClick={() => loginHandler()}>
         Login
       </Button>
     </FormControl>
