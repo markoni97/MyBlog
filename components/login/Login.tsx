@@ -1,31 +1,38 @@
-import { ChangeEvent, FC, FormEvent, MouseEventHandler, useState } from 'react';
-import { LoginInterface } from '../../types';
+import { FC } from 'react';
 import { TextField, Button, FormControl } from '@mui/material';
 import useInput from '../../hook/use-input';
+import { signIn } from 'next-auth/react';
 
 const Login: FC = () => {
-
   const {
-    enteredValue: emailValue,
-    hasError: emailHasError,
-    inputHandler: emailChangeHandler,
-    inputBlurHandler: emailBlurHandler,
+    enteredValue: usernameValue,
+    hasError: usernameHasError,
+    isValid: usernameIsValid,
+    inputHandler: usernameChangeHandler,
+    inputBlurHandler: usernameBlurHandler,
   } = useInput((value) => value.trim() !== '');
 
   const {
     enteredValue: passwordlValue,
     hasError: passwordHasError,
+    isValid: passwordIsValid,
     inputHandler: passwordChangeHandler,
     inputBlurHandler: passwordBlurHandler,
   } = useInput((value) => value.trim() !== '');
 
+  let formIsValid = usernameIsValid && passwordIsValid;
 
-  const loginHandler = () => {
-    if(passwordHasError || emailHasError) {
-      console.log('Form is not valid!')
+  const loginHandler = async () => {
+    if (!formIsValid) {
+      console.log('Form is not valid!');
       return;
     }
-    console.log('Loging in..');
+    const result = await signIn('credentials', {
+      redirect: false,
+      username: usernameValue,
+      password: passwordlValue,
+    });
+    console.log(result);
   };
 
   return (
@@ -44,10 +51,10 @@ const Login: FC = () => {
         label="Username"
         required
         type="text"
-        onChange={emailChangeHandler}
-        onBlur={emailBlurHandler}
-        value={emailValue}
-        error={emailHasError}
+        onChange={usernameChangeHandler}
+        onBlur={usernameBlurHandler}
+        value={usernameValue}
+        error={usernameHasError}
       />
       <TextField
         id="pass"
@@ -59,7 +66,12 @@ const Login: FC = () => {
         value={passwordlValue}
         error={passwordHasError}
       />
-      <Button variant="contained" size="large" onClick={() => loginHandler()}>
+      <Button
+        variant="contained"
+        size="large"
+        onClick={loginHandler}
+        disabled={!formIsValid}
+      >
         Login
       </Button>
     </FormControl>

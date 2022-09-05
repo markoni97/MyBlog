@@ -1,7 +1,6 @@
-import {ReactNode} from "react"
 
 export interface LoginInterface {
-  email: string,
+  username: string,
   password: string
 }
 
@@ -22,10 +21,4 @@ export interface UserInterface {
 
 export interface BlogInterface {
 
-}
-
-export interface ButtonInterface {
-  href?: string,
-  children?: ReactNode
-  onClick?: () => void
 }

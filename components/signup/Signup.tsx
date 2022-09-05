@@ -1,68 +1,101 @@
 import { FormControl, TextField, Button } from '@mui/material';
-import { ChangeEvent, FC, FormEvent, useState } from 'react';
+import { FC } from 'react';
 import { UserInterface } from '../../types';
+import useInput from '../../hook/use-input';
 
 const Signup: FC = () => {
-  // const [isValid, setIsValid] = useState(false);
-  const [fullname, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPass, setConfirmPass] = useState('');
+  console.log('Is rerendered');
+  const {
+    enteredValue: fullNameValue,
+    hasError: fullNameHasError,
+    isValid: fullNameIsValid,
+    inputHandler: fullNameChangeHandler,
+    inputBlurHandler: fullNameBlurHandler,
+    reset: resetFullName,
+  } = useInput((value) => value.trim() !== '');
 
-  const signupHandler = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (
-      !fullname ||
-      !email ||
-      !email.includes('@') ||
-      username.trim().length < 5 ||
-      password.trim().length < 7 ||
-      password !== confirmPass
-    ) {
+  const {
+    enteredValue: emailValue,
+    hasError: emailHasError,
+    isValid: emailIsValid,
+    inputHandler: emailChangeHandler,
+    inputBlurHandler: emailBlurHandler,
+    reset: resetEmail,
+  } = useInput((value) => value.trim() !== '');
+
+  const {
+    enteredValue: usernameValue,
+    hasError: usernameHasError,
+    isValid: usernameIsValid,
+    inputHandler: usernameChangeHandler,
+    inputBlurHandler: usernameBlurHandler,
+    reset: resetUsername,
+  } = useInput((value) => value.trim() !== '');
+
+  const {
+    enteredValue: passwordValue,
+    hasError: passwordHasError,
+    isValid: passwordIsValid,
+    inputHandler: passwordChangeHandler,
+    inputBlurHandler: passwordBlurHandler,
+    reset: resetPassword,
+  } = useInput((value) => value.trim() !== '');
+
+  const {
+    enteredValue: confirmPassValue,
+    hasError: confirmPassHasError,
+    isValid: confirmPassIsValid,
+    inputHandler: confirmPassChangeHandler,
+    inputBlurHandler: confirmPassBlurHandler,
+    reset: resetConfirmPass,
+  } = useInput((value) => value === passwordValue && value.trim() !== '');
+
+  let formIsValid =
+    fullNameIsValid &&
+    emailIsValid &&
+    usernameIsValid &&
+    passwordIsValid &&
+    confirmPassIsValid;
+
+  const resetForm = () => {
+    resetFullName();
+    resetEmail();
+    resetUsername();
+    resetPassword();
+    resetConfirmPass();
+  };
+
+  const signup = async (user: UserInterface) => {
+    const response = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user),
+    });
+
+    const data = await response.json();
+    return data;
+  };
+
+  const signupHandler = async () => {
+    if (!formIsValid) {
+      console.log('Form is not valid..');
       return;
     }
 
     const user: UserInterface = {
-      fullname,
-      email,
-      username,
-      password,
+      fullname: fullNameValue,
+      email: emailValue,
+      username: usernameValue,
+      password: passwordValue,
     };
 
-    console.log(user);
-
-    fetch('/api/auth/signup', {
-      method: 'POST',
-      body: JSON.stringify(user),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => {
-        response.json();
-      })
-      .then((data) => console.log(data));
-  };
-
-  const nameChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setFullName(e.target.value);
-  };
-
-  const emailChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-
-  const usernameChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
-  };
-
-  const passwordChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
-
-  const confirmPassChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setConfirmPass(e.target.value);
+    try {
+      const result = await signup(user);
+      console.log(result);
+    } catch (err) {
+      console.log(err)
+    }
+    resetForm();
   };
 
   return (
@@ -81,7 +114,11 @@ const Signup: FC = () => {
         label="Full Name"
         required
         type="text"
-        onChange={nameChangeHandler}
+        onChange={fullNameChangeHandler}
+        onBlur={fullNameBlurHandler}
+        value={fullNameValue}
+        error={fullNameHasError}
+        helperText={fullNameHasError && 'Must not be empty'}
       />
       <TextField
         id="email"
@@ -89,6 +126,10 @@ const Signup: FC = () => {
         required
         type="email"
         onChange={emailChangeHandler}
+        onBlur={emailBlurHandler}
+        value={emailValue}
+        error={emailHasError}
+        helperText={emailHasError && 'Must not be empty'}
       />
       <TextField
         id="username"
@@ -96,6 +137,10 @@ const Signup: FC = () => {
         required
         type="text"
         onChange={usernameChangeHandler}
+        onBlur={usernameBlurHandler}
+        value={usernameValue}
+        error={usernameHasError}
+        helperText={usernameHasError && 'Must not be empty'}
       />
       <TextField
         id="password"
@@ -103,15 +148,29 @@ const Signup: FC = () => {
         required
         type="password"
         onChange={passwordChangeHandler}
+        onBlur={passwordBlurHandler}
+        value={passwordValue}
+        error={passwordHasError}
+        helperText={passwordHasError && 'Must not be empty'}
       />
       <TextField
         id="conPass"
         label="Confirm password"
         required
-        type="text"
+        type="password"
         onChange={confirmPassChangeHandler}
+        onBlur={confirmPassBlurHandler}
+        value={confirmPassValue}
+        error={confirmPassHasError}
+        helperText={confirmPassHasError && 'Passwords must match!'}
       />
-      <Button variant="contained">Register</Button>
+      <Button
+        variant="contained"
+        onClick={signupHandler}
+        disabled={!formIsValid}
+      >
+        Register
+      </Button>
     </FormControl>
   );
 };

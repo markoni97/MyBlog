@@ -3,7 +3,6 @@ import {
   Box,
   Divider,
   Drawer,
-  Grid,
   IconButton,
   List,
   ListItem,
@@ -15,9 +14,7 @@ import {
 import { Menu } from '@mui/icons-material';
 import Link from 'next/link';
 import { FC, useState } from 'react';
-import Button from '../ui/button/Button';
-import NavigationItem from './navigation-item/NavigationItem';
-import classes from './Navigation.module.scss';
+import NavigationItem from './NavigationItem';
 
 const Navigation: FC = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -85,23 +82,6 @@ const Navigation: FC = () => {
         </Drawer>
       </Box>
     </Box>
-
-    // <nav className={classes["nav"]}>
-    //   <div className={classes["nav__logo"]}>
-    //     <Link href={`/`}><a>MyBLOG</a></Link>
-    //   </div>
-    //   <div className={classes["nav__main"]}>
-    //     <ul className={classes["nav__main__links"]}>
-    //       <NavigationItem label="HOME" href={`/`}/>
-    //       <NavigationItem label="EXPLORE" href={`/`}/>
-    //       <NavigationItem label="MY POSTS" href={`/`}/>
-    //       <NavigationItem label="PROFILE" href={`/`}/>
-    //     </ul>
-    //     <div className={classes["nav__main__auth"]}>
-    //       <Button href={`/auth`}>Login</Button>
-    //     </div>
-    //   </div>
-    // </nav>
   );
 };
 

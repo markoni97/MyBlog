@@ -1,10 +1,12 @@
-import { ChangeEvent, useState, FocusEvent } from 'react';
+import { ChangeEvent, useState, FocusEvent, useEffect } from 'react';
 
 interface InputHook {
-  enteredValue: String;
+  enteredValue: string;
+  isValid: boolean;
   hasError: boolean;
   inputHandler: (e: ChangeEvent<HTMLInputElement>) => void;
   inputBlurHandler: (e: FocusEvent<HTMLInputElement>) => void;
+  reset: () => void;
 }
 
 const useInput = (validate: (value: string) => boolean): InputHook => {
@@ -14,6 +16,9 @@ const useInput = (validate: (value: string) => boolean): InputHook => {
   const isValid: boolean = validate(enteredValue);
   const hasError: boolean = !isValid && isTouched;
 
+  useEffect(() => {
+  });
+
   const inputHandler = (e: ChangeEvent<HTMLInputElement>): void => {
     setEnteredValue(e.target.value);
   };
@@ -22,11 +27,18 @@ const useInput = (validate: (value: string) => boolean): InputHook => {
     setIsTouched(true);
   }
 
+  const reset = () => {
+    setEnteredValue('');
+    setIsTouched(false);
+  }
+
   return {
     enteredValue,
+    isValid,
     hasError,
     inputHandler,
-    inputBlurHandler
+    inputBlurHandler,
+    reset
   };
 };
 
