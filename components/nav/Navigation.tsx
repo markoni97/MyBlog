@@ -39,7 +39,7 @@ const Navigation: FC = () => {
             {data && <NavigationItem label="HOME" href="/" />}
             <NavigationItem label="EXPLORE" href="/" />
             {data && <NavigationItem label="MY POSTS" href="/" />}
-            {data && <NavigationItem label="PROFILE" href="/" />}
+            {data && <NavigationItem label="PROFILE" href="/user-profile" />}
             {!data && <NavigationItem label="LOGIN" href="/auth" />}
             {data && <NavigationItem label="LOGOUT" href="" onClick={signOut}/>}
           </Box>

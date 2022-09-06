@@ -5,7 +5,7 @@ import { signIn } from 'next-auth/react';
 import { useAppDispatch } from '../../hook/hooks';
 import { uiActions } from '../../store/ui-store/ui-slice';
 
-const Login: FC = () => {
+const SignIn: FC = () => {
   const dispatch = useAppDispatch();
 
   const {
@@ -34,13 +34,19 @@ const Login: FC = () => {
 
     dispatch({ type: uiActions.showModal });
 
-    const result = await signIn('credentials', {
-      redirect: false,
-      username: usernameValue,
-      password: passwordlValue,
-    });
-
+    try {
+      await signIn('credentials', {
+        redirect: false,
+        username: usernameValue,
+        password: passwordlValue,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+    
+    window.location.href = '/';
     dispatch({ type: uiActions.hideModal });
+
   };
 
   return (
@@ -88,4 +94,4 @@ const Login: FC = () => {
   );
 };
 
-export default Login;
+export default SignIn;
