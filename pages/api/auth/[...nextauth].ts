@@ -1,9 +1,8 @@
-import { WithId } from "mongodb";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { verifyPassword } from "../../../lib/auth";
 import { connectToDatabase } from "../../../lib/db";
-import { LoginInterface, UserInterface } from "../../../types";
+import { LoginInterface } from "../../../types";
 
 export default NextAuth({
   session: {
@@ -22,7 +21,6 @@ export default NextAuth({
         }
         
         const db =  client.db('myblog');
-
         const user = await db.collection('users').findOne({username: credentials.username});
 
         if(!user) {

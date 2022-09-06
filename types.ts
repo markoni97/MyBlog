@@ -22,3 +22,5 @@ export interface UserInterface {
 export interface BlogInterface {
 
 }
+
+export type BtnVariant = "text" | "outlined" | "contained" | undefined;

@@ -55,6 +55,7 @@ const Login: FC = () => {
         onBlur={usernameBlurHandler}
         value={usernameValue}
         error={usernameHasError}
+        helperText={usernameHasError && "Username must not be empty"}
       />
       <TextField
         id="pass"
@@ -65,6 +66,7 @@ const Login: FC = () => {
         onBlur={passwordBlurHandler}
         value={passwordlValue}
         error={passwordHasError}
+        helperText={passwordHasError && "Password must not be empty"}
       />
       <Button
         variant="contained"
