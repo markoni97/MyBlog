@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import { useState } from 'react';
-import Login from '../../components/login/Login';
-import Signup from '../../components/signup/Signup';
+import SignIn from '../../components/signin/SignIn';
+import SignUp from '../../components/signup/SignUp';
 import { Box, Grid, Button, Typography } from '@mui/material';
 
 const UserAuthentication: NextPage = () => {
@@ -23,11 +23,7 @@ const UserAuthentication: NextPage = () => {
 
   return (
     <Grid container sx={{ height: '100%' }}>
-      <Grid
-        item
-        xs={false}
-        sm={4}
-        md={7}
+      <Grid item xs={false} sm={4} md={7}
         sx={{
           backgroundImage: 'url(/blog-hero.jpg)',
           backgroundSize: 'cover',
@@ -49,8 +45,8 @@ const UserAuthentication: NextPage = () => {
           <Typography variant="h2" textAlign="center">
             Welcome
           </Typography>
-          {!isSignup && <Login />}
-          {isSignup && <Signup />}
+          {!isSignup && <SignIn />}
+          {isSignup && <SignUp />}
           <Box
             sx={{
               display: 'flex',

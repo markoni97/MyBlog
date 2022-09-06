@@ -19,8 +19,4 @@ export interface UserInterface {
   password: string
 }
 
-export interface BlogInterface {
-
-}
-
 export type BtnVariant = "text" | "outlined" | "contained" | undefined;

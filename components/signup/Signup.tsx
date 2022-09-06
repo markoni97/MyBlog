@@ -2,9 +2,12 @@ import { FormControl, TextField, Button } from '@mui/material';
 import { FC } from 'react';
 import { UserInterface } from '../../types';
 import useInput from '../../hook/use-input';
+import { useAppDispatch } from '../../hook/hooks';
+import { uiActions } from '../../store/ui-store/ui-slice';
 
-const Signup: FC = () => {
-  console.log('Is rerendered');
+const SignUp: FC = () => {
+  const dispatch = useAppDispatch();
+
   const {
     enteredValue: fullNameValue,
     hasError: fullNameHasError,
@@ -82,6 +85,8 @@ const Signup: FC = () => {
       return;
     }
 
+    dispatch({type: uiActions.showModal});
+
     const user: UserInterface = {
       fullname: fullNameValue,
       email: emailValue,
@@ -95,6 +100,7 @@ const Signup: FC = () => {
     } catch (err) {
       console.log(err)
     }
+    dispatch({type: uiActions.hideModal});
     resetForm();
   };
 
@@ -175,4 +181,4 @@ const Signup: FC = () => {
   );
 };
 
-export default Signup;
+export default SignUp;

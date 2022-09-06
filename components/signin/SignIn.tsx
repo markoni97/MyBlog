@@ -2,8 +2,12 @@ import { FC } from 'react';
 import { TextField, Button, FormControl } from '@mui/material';
 import useInput from '../../hook/use-input';
 import { signIn } from 'next-auth/react';
+import { useAppDispatch } from '../../hook/hooks';
+import { uiActions } from '../../store/ui-store/ui-slice';
 
 const Login: FC = () => {
+  const dispatch = useAppDispatch();
+
   const {
     enteredValue: usernameValue,
     hasError: usernameHasError,
@@ -27,12 +31,16 @@ const Login: FC = () => {
       console.log('Form is not valid!');
       return;
     }
+
+    dispatch({ type: uiActions.showModal });
+
     const result = await signIn('credentials', {
       redirect: false,
       username: usernameValue,
       password: passwordlValue,
     });
-    console.log(result);
+
+    dispatch({ type: uiActions.hideModal });
   };
 
   return (
@@ -55,7 +63,7 @@ const Login: FC = () => {
         onBlur={usernameBlurHandler}
         value={usernameValue}
         error={usernameHasError}
-        helperText={usernameHasError && "Username must not be empty"}
+        helperText={usernameHasError && 'Username must not be empty'}
       />
       <TextField
         id="pass"
@@ -66,7 +74,7 @@ const Login: FC = () => {
         onBlur={passwordBlurHandler}
         value={passwordlValue}
         error={passwordHasError}
-        helperText={passwordHasError && "Password must not be empty"}
+        helperText={passwordHasError && 'Password must not be empty'}
       />
       <Button
         variant="contained"
